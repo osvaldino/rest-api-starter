@@ -5,26 +5,27 @@
 [![PHP 8.4](https://img.shields.io/badge/PHP-8.4-777BB4.svg)](https://www.php.net/)
 [![Laravel 12](https://img.shields.io/badge/Laravel-12-FF2D20.svg)](https://laravel.com/)
 
-> **Production-ready API boilerplate** com autenticação Sanctum, responses padronizadas, exception handling global, filtros/paginação e CRUD completo de exemplo.
+> **Production-ready API boilerplate** com autenticação Sanctum, responses padronizadas, exception handling global,
+> filtros/paginação e CRUD completo de exemplo.
 
 ---
 
 ## ✨ Features
 
-✅ **Laravel 12** + **PHP 8.4** com `strict_types` em todos os arquivos
-✅ **Autenticação Sanctum** (Bearer tokens)
-✅ **Responses padronizadas** (contrato consistente JSON)
-✅ **Exception handling global** em `bootstrap/app.php`
-✅ **Middlewares customizados** (Request ID, JSON enforcer)
-✅ **Filtros e paginação** com limites e ordenação
-✅ **CRUD completo**: Projects, Tasks, Categories
-✅ **Arquitetura limpa**: Actions, Services, Resources, Requests
-✅ **Docker Compose** para ambiente local (PHP 8.4 + PostgreSQL 16)
-✅ **GitHub Actions CI** (testes, Pint, PHPStan nível 5)
-✅ **Testes com Pest** (80%+ coverage obrigatório)
-✅ **Soft deletes** em todos os models
-✅ **PostgreSQL** como banco de dados
-✅ **Code quality**: PSR-12, Larastan, Laravel Pint
+✅ **Laravel 12** + **PHP 8.4** com `strict_types` em todos os arquivos <br>
+✅ **Autenticação Sanctum** (Bearer tokens) <br>
+✅ **Responses padronizadas** (contrato consistente JSON) <br>
+✅ **Exception handling global** em `bootstrap/app.php` <br>
+✅ **Middlewares customizados** (Request ID, JSON enforcer) <br>
+✅ **Filtros e paginação** com limites e ordenação <br>
+✅ **CRUD completo**: Projects, Tasks, Categories <br>
+✅ **Arquitetura limpa**: Actions, Services, Resources, Requests <br>
+✅ **Docker Compose** para ambiente local (PHP 8.4 + PostgreSQL 16) <br>
+✅ **GitHub Actions CI** (testes, Pint, PHPStan nível 5) <br>
+✅ **Testes com Pest** (80%+ coverage obrigatório) <br>
+✅ **Soft deletes** em todos os models <br>
+✅ **PostgreSQL** como banco de dados <br>
+✅ **Code quality**: PSR-12, Larastan, Laravel Pint <br>
 
 ---
 
@@ -104,23 +105,23 @@ curl -X POST http://localhost/api/v1/auth/register \
 
 ```json
 {
-  "success": true,
-  "message": "User registered successfully",
-  "data": {
-    "user": {
-      "id": 1,
-      "name": "John Doe",
-      "email": "john@example.com",
-      "created_at": "2024-01-01T00:00:00+00:00",
-      "updated_at": "2024-01-01T00:00:00+00:00"
+    "success": true,
+    "message": "User registered successfully",
+    "data": {
+        "user": {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00"
+        },
+        "token": "1|abc123..."
     },
-    "token": "1|abc123..."
-  },
-  "meta": {
-    "request_id": "9c7f2a15-3b4e-4f6d-8e9a-1b2c3d4e5f6g",
-    "timestamp": "2024-01-01T00:00:00+00:00"
-  },
-  "errors": null
+    "meta": {
+        "request_id": "9c7f2a15-3b4e-4f6d-8e9a-1b2c3d4e5f6g",
+        "timestamp": "2024-01-01T00:00:00+00:00"
+    },
+    "errors": null
 }
 ```
 
@@ -162,13 +163,13 @@ curl -X GET "http://localhost/api/v1/projects?search=Laravel&status=in_progress&
 
 **Parâmetros de query:**
 
-| Parâmetro | Descrição | Exemplo |
-|-----------|-----------|---------|
-| `search` | Busca em `name` e `description` | `search=Laravel` |
-| `status` | Filtra por status | `status=in_progress` |
-| `sort` | Ordena por campo (prefixo `-` para DESC) | `sort=-created_at` |
-| `page` | Número da página | `page=1` |
-| `per_page` | Itens por página (1-100) | `per_page=15` |
+| Parâmetro  | Descrição                                | Exemplo              |
+|------------|------------------------------------------|----------------------|
+| `search`   | Busca em `name` e `description`          | `search=Laravel`     |
+| `status`   | Filtra por status                        | `status=in_progress` |
+| `sort`     | Ordena por campo (prefixo `-` para DESC) | `sort=-created_at`   |
+| `page`     | Número da página                         | `page=1`             |
+| `per_page` | Itens por página (1-100)                 | `per_page=15`        |
 
 **Campos de ordenação permitidos:** `created_at`, `updated_at`, `name`, `status`
 
@@ -178,32 +179,32 @@ curl -X GET "http://localhost/api/v1/projects?search=Laravel&status=in_progress&
 
 ```json
 {
-  "success": true,
-  "message": "Projects retrieved successfully",
-  "data": [
-    {
-      "id": 1,
-      "name": "Laravel API",
-      "description": "REST API with Laravel 12",
-      "status": "in_progress",
-      "status_label": "In Progress",
-      "created_at": "2024-01-01T00:00:00+00:00",
-      "updated_at": "2024-01-01T00:00:00+00:00"
-    }
-  ],
-  "meta": {
-    "request_id": "uuid-here",
-    "timestamp": "2024-01-01T00:00:00+00:00",
-    "pagination": {
-      "current_page": 1,
-      "per_page": 15,
-      "total": 1,
-      "last_page": 1,
-      "from": 1,
-      "to": 1
-    }
-  },
-  "errors": null
+    "success": true,
+    "message": "Projects retrieved successfully",
+    "data": [
+        {
+            "id": 1,
+            "name": "Laravel API",
+            "description": "REST API with Laravel 12",
+            "status": "in_progress",
+            "status_label": "In Progress",
+            "created_at": "2024-01-01T00:00:00+00:00",
+            "updated_at": "2024-01-01T00:00:00+00:00"
+        }
+    ],
+    "meta": {
+        "request_id": "uuid-here",
+        "timestamp": "2024-01-01T00:00:00+00:00",
+        "pagination": {
+            "current_page": 1,
+            "per_page": 15,
+            "total": 1,
+            "last_page": 1,
+            "from": 1,
+            "to": 1
+        }
+    },
+    "errors": null
 }
 ```
 
@@ -255,15 +256,22 @@ curl -X DELETE http://localhost/api/v1/projects/1 \
 
 ```json
 {
-  "success": true,
-  "message": "Operation successful",
-  "data": { ... },
-  "meta": {
-    "request_id": "uuid-here",
-    "timestamp": "2024-01-01T00:00:00+00:00",
-    "pagination": { ... }
-  },
-  "errors": null
+    "success": true,
+    "message": "Operation successful",
+    "data": {},
+    "meta": {
+        "request_id": "uuid-here",
+        "timestamp": "2024-01-01T00:00:00+00:00",
+        "pagination": {
+            "current_page": 1,
+            "per_page": 15,
+            "total": 100,
+            "last_page": 7,
+            "from": 1,
+            "to": 15
+        }
+    },
+    "errors": null
 }
 ```
 
@@ -271,20 +279,20 @@ curl -X DELETE http://localhost/api/v1/projects/1 \
 
 ```json
 {
-  "success": false,
-  "message": "Validation failed",
-  "data": null,
-  "meta": {
-    "request_id": "uuid-here",
-    "timestamp": "2024-01-01T00:00:00+00:00"
-  },
-  "errors": [
-    {
-      "code": "validation_error",
-      "field": "email",
-      "detail": "The email field is required"
-    }
-  ]
+    "success": false,
+    "message": "Validation failed",
+    "data": null,
+    "meta": {
+        "request_id": "uuid-here",
+        "timestamp": "2024-01-01T00:00:00+00:00"
+    },
+    "errors": [
+        {
+            "code": "validation_error",
+            "field": "email",
+            "detail": "The email field is required"
+        }
+    ]
 }
 ```
 
@@ -311,34 +319,34 @@ curl -X DELETE http://localhost/api/v1/projects/1 \
 
 ### Projects
 
-| Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
-| `search` | string | Busca em `name` e `description` |
-| `status` | string | Filtra por status exato |
-| `sort` | string | Ordena por campo (ex: `-created_at`) |
-| `page` | int | Página atual |
-| `per_page` | int | Itens por página (1-100) |
+| Parâmetro  | Tipo   | Descrição                            |
+|------------|--------|--------------------------------------|
+| `search`   | string | Busca em `name` e `description`      |
+| `status`   | string | Filtra por status exato              |
+| `sort`     | string | Ordena por campo (ex: `-created_at`) |
+| `page`     | int    | Página atual                         |
+| `per_page` | int    | Itens por página (1-100)             |
 
 ### Tasks
 
-| Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
-| `search` | string | Busca em `title` |
-| `project_id` | int | Filtra por projeto |
-| `category_id` | int | Filtra por categoria |
-| `done` | bool | Filtra por status de conclusão |
-| `sort` | string | Ordena por campo |
-| `page` | int | Página atual |
-| `per_page` | int | Itens por página (1-100) |
+| Parâmetro     | Tipo   | Descrição                      |
+|---------------|--------|--------------------------------|
+| `search`      | string | Busca em `title`               |
+| `project_id`  | int    | Filtra por projeto             |
+| `category_id` | int    | Filtra por categoria           |
+| `done`        | bool   | Filtra por status de conclusão |
+| `sort`        | string | Ordena por campo               |
+| `page`        | int    | Página atual                   |
+| `per_page`    | int    | Itens por página (1-100)       |
 
 ### Categories
 
-| Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
-| `search` | string | Busca em `name` |
-| `sort` | string | Ordena por campo |
-| `page` | int | Página atual |
-| `per_page` | int | Itens por página (1-100) |
+| Parâmetro  | Tipo   | Descrição                |
+|------------|--------|--------------------------|
+| `search`   | string | Busca em `name`          |
+| `sort`     | string | Ordena por campo         |
+| `page`     | int    | Página atual             |
+| `per_page` | int    | Itens por página (1-100) |
 
 ---
 
@@ -484,11 +492,11 @@ Edite `compose.yaml` para adicionar Redis, Mailhog, etc:
 
 ```yaml
 redis:
-  image: 'redis:alpine'
-  ports:
-    - '6379:6379'
-  networks:
-    - app-network
+    image: 'redis:alpine'
+    ports:
+        - '6379:6379'
+    networks:
+        - app-network
 ```
 
 ---
@@ -571,7 +579,8 @@ docker compose exec app php artisan test --coverage --min=80
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](https://opensource.org/licenses/MIT) para mais
+detalhes. <br>
 
 ---
 
