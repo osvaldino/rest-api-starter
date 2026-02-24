@@ -39,7 +39,7 @@ test('user can register', function (): void {
 });
 
 test('user can login', function (): void {
-    $user = User::factory()->create([
+    User::factory()->create([
         'email' => 'john@example.com',
     ]);
 
@@ -81,7 +81,7 @@ test('authenticated user can get their profile', function (): void {
     $token = $user->createToken('test-token')->plainTextToken;
 
     $response = $this->getJson('/api/v1/me', [
-        'Authorization' => "Bearer {$token}",
+        'Authorization' => "Bearer $token",
     ]);
 
     $response->assertStatus(200)
@@ -100,7 +100,7 @@ test('user can logout', function (): void {
     $token = $user->createToken('test-token')->plainTextToken;
 
     $response = $this->postJson('/api/v1/logout', [], [
-        'Authorization' => "Bearer {$token}",
+        'Authorization' => "Bearer $token",
     ]);
 
     $response->assertStatus(200);

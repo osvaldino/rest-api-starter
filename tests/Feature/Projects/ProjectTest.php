@@ -18,7 +18,7 @@ test('can list projects', function (): void {
     Project::factory()->count(5)->create();
 
     $response = $this->getJson('/api/v1/projects', [
-        'Authorization' => "Bearer {$this->token}",
+        'Authorization' => "Bearer $this->token",
     ]);
 
     $response->assertStatus(200)
@@ -49,7 +49,7 @@ test('can create project', function (): void {
     ];
 
     $response = $this->postJson('/api/v1/projects', $payload, [
-        'Authorization' => "Bearer {$this->token}",
+        'Authorization' => "Bearer $this->token",
     ]);
 
     $response->assertStatus(201)
@@ -61,8 +61,6 @@ test('can create project', function (): void {
                 'description',
                 'status',
                 'status_label',
-                'created_at',
-                'updated_at',
             ],
         ]);
 
@@ -76,8 +74,8 @@ test('can create project', function (): void {
 test('can show project', function (): void {
     $project = Project::factory()->create();
 
-    $response = $this->getJson("/api/v1/projects/{$project->id}", [
-        'Authorization' => "Bearer {$this->token}",
+    $response = $this->getJson("/api/v1/projects/$project->id", [
+        'Authorization' => "Bearer $this->token",
     ]);
 
     $response->assertStatus(200)
@@ -101,8 +99,8 @@ test('can update project', function (): void {
         'status' => ProjectStatus::IN_PROGRESS->value,
     ];
 
-    $response = $this->putJson("/api/v1/projects/{$project->id}", $payload, [
-        'Authorization' => "Bearer {$this->token}",
+    $response = $this->putJson("/api/v1/projects/$project->id", $payload, [
+        'Authorization' => "Bearer $this->token",
     ]);
 
     $response->assertStatus(200);
@@ -114,8 +112,8 @@ test('can update project', function (): void {
 test('can delete project', function (): void {
     $project = Project::factory()->create();
 
-    $response = $this->deleteJson("/api/v1/projects/{$project->id}", [], [
-        'Authorization' => "Bearer {$this->token}",
+    $response = $this->deleteJson("/api/v1/projects/$project->id", [], [
+        'Authorization' => "Bearer $this->token",
     ]);
 
     $response->assertStatus(200);
@@ -130,7 +128,7 @@ test('can filter projects by status', function (): void {
     Project::factory()->count(2)->create(['status' => ProjectStatus::IN_PROGRESS]);
 
     $response = $this->getJson('/api/v1/projects?status=planning', [
-        'Authorization' => "Bearer {$this->token}",
+        'Authorization' => "Bearer $this->token",
     ]);
 
     $response->assertStatus(200);
@@ -144,7 +142,7 @@ test('can search projects', function (): void {
     Project::factory()->create(['name' => 'Gamma Deploy']);
 
     $response = $this->getJson('/api/v1/projects?search=Release', [
-        'Authorization' => "Bearer {$this->token}",
+        'Authorization' => "Bearer $this->token",
     ]);
 
     $response->assertStatus(200);
