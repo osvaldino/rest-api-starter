@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace App\Actions\Auth;
 
 use App\Models\User;
+use Laravel\Sanctum\PersonalAccessToken;
 
 final class LogoutAction
 {
     public function execute(User $user): void
     {
-        $user->currentAccessToken()->delete();
+        $token = $user->currentAccessToken();
+
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+        }
     }
 }

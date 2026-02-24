@@ -7,10 +7,10 @@ namespace App\Actions\Auth;
 use App\Models\User;
 use App\Services\AuthService;
 
-final class RegisterAction
+final readonly class RegisterAction
 {
     public function __construct(
-        private readonly AuthService $authService,
+        private AuthService $authService,
     ) {}
 
     public function execute(array $data): array

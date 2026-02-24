@@ -7,10 +7,10 @@ namespace App\Actions\Auth;
 use App\Services\AuthService;
 use Illuminate\Validation\ValidationException;
 
-final class LoginAction
+final readonly class LoginAction
 {
     public function __construct(
-        private readonly AuthService $authService,
+        private AuthService $authService,
     ) {}
 
     public function execute(array $credentials): array

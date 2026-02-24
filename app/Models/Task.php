@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\TaskFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,10 +22,10 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read \App\Models\Category|null $category
- * @property-read \App\Models\Project $project
+ * @property-read Category|null $category
+ * @property-read Project $project
  *
- * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
+ * @method static TaskFactory factory($count = null, $state = [])
  * @method static Builder<static>|Task newModelQuery()
  * @method static Builder<static>|Task newQuery()
  * @method static Builder<static>|Task onlyTrashed()
@@ -55,16 +56,6 @@ final class Task extends Model
             'done',
         ];
 
-    protected function casts(): array
-    {
-        return [
-            'done' => 'boolean',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-            'deleted_at' => 'datetime',
-        ];
-    }
-
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
@@ -73,5 +64,15 @@ final class Task extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'done' => 'boolean',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
     }
 }

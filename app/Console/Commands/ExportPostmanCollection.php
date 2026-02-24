@@ -6,16 +6,17 @@ use Illuminate\Console\Command;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
+use stdClass;
 
 class ExportPostmanCollection extends Command
 {
+    private const array AUTH_ROUTES = ['register', 'login', 'logout', 'me'];
+
     protected $signature = 'export:postman
                             {--output=postman_collection.json : Output file path}
                             {--base-url=http://localhost : Base URL for the collection}';
 
     protected $description = 'Export all API routes as a Postman collection JSON file';
-
-    private const AUTH_ROUTES = ['register', 'login', 'logout', 'me'];
 
     /**
      * Per-route configuration: description and mock body.
@@ -165,7 +166,7 @@ class ExportPostmanCollection extends Command
 
         file_put_contents($output, $json);
 
-        $this->info("Postman collection exported to: {$output}");
+        $this->info("Postman collection exported to: $output");
         $this->line('  Folders: '.count($folders));
         $this->line('  Requests: '.collect($folders)->flatten(1)->count());
 
@@ -194,10 +195,12 @@ class ExportPostmanCollection extends Command
 
     private function resolveMethods(Route $route): array
     {
-        return array_values(array_filter(
-            $route->methods(),
-            fn ($m) => $m !== 'HEAD'
-        ));
+        return array_values(
+            array_filter(
+                $route->methods(),
+                fn ($m) => $m !== 'HEAD'
+            )
+        );
     }
 
     private function buildItem(Route $route, string $method, string $baseUrl): array
@@ -236,7 +239,7 @@ class ExportPostmanCollection extends Command
         }
 
         if (in_array(strtoupper($method), ['POST', 'PUT', 'PATCH'])) {
-            $body = $config['body'] ?? new \stdClass;
+            $body = $config['body'] ?? new stdClass;
             $item['request']['body'] = [
                 'mode' => 'raw',
                 'raw' => json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
@@ -263,13 +266,6 @@ class ExportPostmanCollection extends Command
         return $this->routeConfig[$lastSegment] ?? [];
     }
 
-    private function requiresAuth(Route $route): bool
-    {
-        return collect($route->gatherMiddleware())->contains(
-            fn ($m) => Str::contains($m, ['auth', 'sanctum'])
-        );
-    }
-
     private function generateName(string $method, string $uri): string
     {
         $segments = collect(explode('/', trim($uri, '/')))
@@ -278,5 +274,12 @@ class ExportPostmanCollection extends Command
             ->implode(' ');
 
         return Str::title(strtolower($method).' '.$segments);
+    }
+
+    private function requiresAuth(Route $route): bool
+    {
+        return collect($route->gatherMiddleware())->contains(
+            fn ($m) => Str::contains($m, ['auth', 'sanctum'])
+        );
     }
 }

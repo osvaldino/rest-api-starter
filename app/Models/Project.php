@@ -23,7 +23,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection<int, \App\Models\Task> $tasks
+ * @property-read Collection<int, Task> $tasks
  * @property-read int|null $tasks_count
  *
  * @method static ProjectFactory factory($count = null, $state = [])
@@ -55,6 +55,11 @@ final class Project extends Model
             'status',
         ];
 
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
     protected function casts(): array
     {
         return [
@@ -63,10 +68,5 @@ final class Project extends Model
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
         ];
-    }
-
-    public function tasks(): HasMany
-    {
-        return $this->hasMany(Task::class);
     }
 }
