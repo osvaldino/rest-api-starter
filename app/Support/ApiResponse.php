@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Support;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class ApiResponse
 {
@@ -18,7 +21,7 @@ final class ApiResponse
         return response()->json([
             'success' => true,
             'message' => $message,
-            'data' => $data,
+            'data' => $data instanceof JsonResource ? $data->resolve() : $data,
             'meta' => array_merge([
                 'request_id' => request()->attributes->get('request_id'),
                 'timestamp' => now()->toIso8601String(),

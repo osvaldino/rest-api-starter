@@ -1,0 +1,965 @@
+{
+    "info": {
+        "name": "Laravel API",
+        "_postman_id": "e8f915d8-eb14-4cd3-b0d2-9cf7842f3e0b",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Post Register",
+                    "request": {
+                        "method": "POST",
+                        "description": "Register a new user account.\n\nReturns the created user data and an API access token.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/register",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "register"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Post Login",
+                    "request": {
+                        "method": "POST",
+                        "description": "Authenticate a user with email and password.\n\nReturns a Sanctum API token. Use this token as a Bearer token in subsequent requests.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/login",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "login"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Post Logout",
+                    "request": {
+                        "method": "POST",
+                        "description": "Revoke the current user's API token.\n\nRequires authentication. After logout, the token will no longer be valid.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/logout",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "logout"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Get Me",
+                    "request": {
+                        "method": "GET",
+                        "description": "Retrieve the authenticated user's profile data.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/me",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "me"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Projects",
+            "item": [
+                {
+                    "name": "Get Projects",
+                    "request": {
+                        "method": "GET",
+                        "description": "List all projects with optional filtering and pagination.\n\nQuery parameters:\n- `search` (string): Filter by name\n- `status` (string): Filter by status \u2014 `planning`, `in_progress`, `completed`, `on_hold`, `cancelled`\n- `sort` (string): Column to sort by\n- `per_page` (integer): Results per page (default: 15)",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/projects",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "projects"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Post Projects",
+                    "request": {
+                        "method": "POST",
+                        "description": "Create a new project.\n\nRequires authentication.\n\nAllowed status values: `planning`, `in_progress`, `completed`, `on_hold`, `cancelled`.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/projects",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "projects"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Website Redesign\",\n    \"description\": \"Complete redesign of the company website with a new UI.\",\n    \"status\": \"planning\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Get Projects By Project",
+                    "request": {
+                        "method": "GET",
+                        "description": "Retrieve a single project by ID, including its related tasks.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/projects/{project}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "projects",
+                                ":project"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Put Projects By Project",
+                    "request": {
+                        "method": "PUT",
+                        "description": "Update an existing project by ID.\n\nRequires authentication.\n\nAllowed status values: `planning`, `in_progress`, `completed`, `on_hold`, `cancelled`.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/projects/{project}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "projects",
+                                ":project"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Website Redesign\",\n    \"description\": \"Complete redesign of the company website with new UI and dark mode.\",\n    \"status\": \"in_progress\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Patch Projects By Project",
+                    "request": {
+                        "method": "PATCH",
+                        "description": "Update an existing project by ID.\n\nRequires authentication.\n\nAllowed status values: `planning`, `in_progress`, `completed`, `on_hold`, `cancelled`.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/projects/{project}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "projects",
+                                ":project"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Website Redesign\",\n    \"description\": \"Complete redesign of the company website with new UI and dark mode.\",\n    \"status\": \"in_progress\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Projects By Project",
+                    "request": {
+                        "method": "DELETE",
+                        "description": "Soft-delete a project by ID.\n\nRequires authentication. The project and its associated tasks are soft-deleted and can be restored.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/projects/{project}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "projects",
+                                ":project"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Tasks",
+            "item": [
+                {
+                    "name": "Get Tasks",
+                    "request": {
+                        "method": "GET",
+                        "description": "List all tasks with optional filtering and pagination.\n\nQuery parameters:\n- `search` (string): Filter by title\n- `project_id` (integer): Filter by project\n- `category_id` (integer): Filter by category\n- `done` (boolean): Filter by completion status\n- `sort` (string): Column to sort by\n- `per_page` (integer): Results per page (default: 15)",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/tasks",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "tasks"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Post Tasks",
+                    "request": {
+                        "method": "POST",
+                        "description": "Create a new task linked to a project and optionally a category.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/tasks",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "tasks"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"project_id\": 1,\n    \"category_id\": 1,\n    \"title\": \"Design homepage layout\",\n    \"done\": false\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Get Tasks By Task",
+                    "request": {
+                        "method": "GET",
+                        "description": "Retrieve a single task by ID, including its related project and category.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/tasks/{task}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "tasks",
+                                ":task"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Put Tasks By Task",
+                    "request": {
+                        "method": "PUT",
+                        "description": "Update an existing task by ID.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/tasks/{task}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "tasks",
+                                ":task"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"project_id\": 1,\n    \"category_id\": 1,\n    \"title\": \"Design homepage layout\",\n    \"done\": true\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Patch Tasks By Task",
+                    "request": {
+                        "method": "PATCH",
+                        "description": "Update an existing task by ID.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/tasks/{task}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "tasks",
+                                ":task"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"project_id\": 1,\n    \"category_id\": 1,\n    \"title\": \"Design homepage layout\",\n    \"done\": true\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Tasks By Task",
+                    "request": {
+                        "method": "DELETE",
+                        "description": "Soft-delete a task by ID.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/tasks/{task}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "tasks",
+                                ":task"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Categories",
+            "item": [
+                {
+                    "name": "Get Categories",
+                    "request": {
+                        "method": "GET",
+                        "description": "List all categories with optional filtering and pagination.\n\nQuery parameters:\n- `search` (string): Filter by name\n- `sort` (string): Column to sort by\n- `per_page` (integer): Results per page (default: 15)",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/categories",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Post Categories",
+                    "request": {
+                        "method": "POST",
+                        "description": "Create a new category.\n\nRequires authentication. The name must be unique.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/categories",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Frontend Development\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Get Categories By Category",
+                    "request": {
+                        "method": "GET",
+                        "description": "Retrieve a single category by ID.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/categories/{category}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories",
+                                ":category"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Put Categories By Category",
+                    "request": {
+                        "method": "PUT",
+                        "description": "Update an existing category by ID.\n\nRequires authentication. The name must be unique (excluding the current record).",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/categories/{category}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories",
+                                ":category"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Backend Development\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Patch Categories By Category",
+                    "request": {
+                        "method": "PATCH",
+                        "description": "Update an existing category by ID.\n\nRequires authentication. The name must be unique (excluding the current record).",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/categories/{category}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories",
+                                ":category"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Backend Development\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Categories By Category",
+                    "request": {
+                        "method": "DELETE",
+                        "description": "Soft-delete a category by ID.\n\nRequires authentication.",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost/api/v1/categories/{category}",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories",
+                                ":category"
+                            ]
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

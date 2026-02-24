@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
@@ -30,7 +32,10 @@ final class TaskController extends Controller
             search: $request->query('search'),
             projectId: $request->query('project_id') !== null ? (int) $request->query('project_id') : null,
             categoryId: $request->query('category_id') !== null ? (int) $request->query('category_id') : null,
-            done: $request->query('done') !== null ? filter_var($request->query('done'), FILTER_VALIDATE_BOOLEAN) : null,
+            done: $request->query('done') !== null ? filter_var(
+                $request->query('done'),
+                FILTER_VALIDATE_BOOLEAN
+            ) : null,
             sort: $request->query('sort', '-created_at'),
             perPage: (int) $request->query('per_page', '15'),
         );

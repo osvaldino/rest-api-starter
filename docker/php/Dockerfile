@@ -46,18 +46,18 @@ RUN apk add --no-cache \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
+# OPcache: validate_timestamps=1 so file changes reflect without restart
 RUN { \
         echo '[opcache]'; \
         echo 'opcache.enable=1'; \
         echo 'opcache.memory_consumption=256'; \
         echo 'opcache.interned_strings_buffer=16'; \
         echo 'opcache.max_accelerated_files=20000'; \
-        echo 'opcache.validate_timestamps=0'; \
+        echo 'opcache.validate_timestamps=1'; \
+        echo 'opcache.revalidate_freq=0'; \
         echo 'opcache.save_comments=1'; \
-        echo 'opcache.jit=1255'; \
-        echo 'opcache.jit_buffer_size=128M'; \
     } > "$PHP_INI_DIR/conf.d/opcache.ini"
 
 RUN { \
@@ -77,16 +77,8 @@ RUN addgroup -g $WWWGROUP appgroup \
     && adduser -u $WWWUSER -G appgroup -s /bin/sh -D appuser
 
 RUN mkdir -p /var/www/html/storage/logs \
-    && mkdir -p /var/www/html/bootstrap/cache \
-    && chown -R appuser:appgroup /var/www/html \
-    && chown -R appuser:appgroup /var/log \
-    && chown -R appuser:appgroup /var/run
-
-COPY --chown=appuser:appgroup . /var/www/html
-
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist \
-    && php artisan optimize:clear || true
+    && mkdir -p /var/www/html/bootstrap/cache
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["sh", "-c", "chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]

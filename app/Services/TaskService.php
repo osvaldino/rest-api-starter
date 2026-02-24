@@ -1,13 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Support\Traits\AppliesSorting;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 final class TaskService
 {
+    use AppliesSorting;
+
     private const array ALLOWED_SORTS = [
         'created_at',
         'updated_at',
@@ -28,7 +33,7 @@ final class TaskService
         $query = Task::query();
 
         if ($search !== null && $search !== '') {
-            $query->where('title', 'ilike', "%{$search}%");
+            $query->where('title', 'ilike', "%$search%");
         }
 
         if ($projectId !== null) {
@@ -43,19 +48,7 @@ final class TaskService
             $query->where('done', $done);
         }
 
-        $direction = 'asc';
-
-        if (str_starts_with($sort, '-')) {
-            $direction = 'desc';
-            $sort = ltrim($sort, '-');
-        }
-
-        if (! in_array($sort, self::ALLOWED_SORTS, true)) {
-            $sort = 'created_at';
-            $direction = 'desc';
-        }
-
-        $query->orderBy($sort, $direction);
+        $this->applySorting($query, $sort, self::ALLOWED_SORTS);
 
         return $query->paginate($perPage)->through(fn ($task) => new TaskResource($task));
     }

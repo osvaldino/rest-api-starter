@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
@@ -41,7 +43,7 @@ final class ProjectController extends Controller
         $project->load('tasks');
 
         return ApiResponse::success(
-            data: new ProjectResource($project),
+            data: new ProjectResource($project)->resolve(),
         );
     }
 
